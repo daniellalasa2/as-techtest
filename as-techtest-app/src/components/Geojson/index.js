@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import { grey } from "@mui/material/colors";
 
 function Geojson({osmdataset}) {
-	
+
 
 	return (
 		<Box
@@ -17,7 +17,7 @@ function Geojson({osmdataset}) {
 				bgcolor: "white",
 				borderRadius: 3,
 			}}>
-			
+			{osmdataset}
 		</Box>
 	);
 }

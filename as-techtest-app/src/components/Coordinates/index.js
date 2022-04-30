@@ -7,12 +7,18 @@ function Coordinates({ onCoordsChange }) {
 	const [coords, setCoords] = React.useState({ lat: 0, lng: 0 });
 
 	const handleCoords = (coordType, value) => {
-		if (typeof value === "Number") {
+		console.log("coords: ",coordType,value);
+		
+		if (typeof value === "number" && value.toString().length <= 12) {
 			if (coordType === "lat") setCoords({ ...coords, lat: value });
 			else if (coordType === "lng") setCoords({ ...coords, lng: value });
+			
 		}
 	};
 
+	React.useEffect(()=>{
+		console.log("coords state:",coords);
+	},[coords]);
 	return (
 		<Box
 			component="div"
@@ -28,8 +34,9 @@ function Coordinates({ onCoordsChange }) {
 				label="Lat"
 				variant="outlined"
 				sx={{ flexGrow: "1" }}
+				type="number"
 				value={coords.lat}
-				onChange={(e) => handleCoords("lat", e.target.value)}
+				onChange={(e) => handleCoords("lat", Number(e.target.value))}
 			/>
 			<TextField
 				size="small"
@@ -38,13 +45,15 @@ function Coordinates({ onCoordsChange }) {
 				variant="outlined"
 				sx={{ flexGrow: "1" }}
 				value={coords.lng}
-				onChange={(e) => handleCoords("lng", e.target.value)}
+				type="number"
+				onChange={(e) => handleCoords("lng", Number(e.target.value))}
 			/>
 			<Button
 				size="small"
 				variant="contained"
 				sx={{ flexGrow: "1", boxShadow: 0 }}
-				onClick={onCoordsChange.call(coords)}>
+
+				onClick={()=>onCoordsChange(coords)}>
 				Submit
 			</Button>
 		</Box>
