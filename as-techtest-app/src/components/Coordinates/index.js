@@ -1,24 +1,32 @@
 import * as React from "react";
+import PropTypes from "prop-types";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
-function Coordinates({ onCoordsChange }) {
-	const [coords, setCoords] = React.useState({ lat: 0, lng: 0 });
+function Coordinates({ onCoordsChange, button }) {
+	const [lat, setLat] = React.useState("");
+	const [lng, setLng] = React.useState("");
 
-	const handleCoords = (coordType, value) => {
-		console.log("coords: ",coordType,value);
-		
-		if (typeof value === "number" && value.toString().length <= 12) {
-			if (coordType === "lat") setCoords({ ...coords, lat: value });
-			else if (coordType === "lng") setCoords({ ...coords, lng: value });
-			
+	const handleCoords = (e) => {
+		const { name, value } = e.target;
+		if (
+			name === "lat" &&
+			value.length <= 11 &&
+			Number(value) <= 90 &&
+			Number(value) >= -90
+		) {
+			setLat(value);
+		} else if (
+			name === "lng" &&
+			value.length <= 12 &&
+			Number(value) <= 180 &&
+			Number(value) >= -180
+		) {
+			setLng(value);
 		}
 	};
 
-	React.useEffect(()=>{
-		console.log("coords state:",coords);
-	},[coords]);
 	return (
 		<Box
 			component="div"
@@ -31,33 +39,48 @@ function Coordinates({ onCoordsChange }) {
 			<TextField
 				size="small"
 				id="node-name"
-				label="Lat"
+				label="Latitude"
 				variant="outlined"
 				sx={{ flexGrow: "1" }}
-				type="number"
-				value={coords.lat}
-				onChange={(e) => handleCoords("lat", Number(e.target.value))}
+				value={lat}
+				type="text"
+				name="lat"
+				onChange={handleCoords}
 			/>
 			<TextField
 				size="small"
 				id="node-name"
-				label="Lng"
+				label="Langitude"
 				variant="outlined"
 				sx={{ flexGrow: "1" }}
-				value={coords.lng}
-				type="number"
-				onChange={(e) => handleCoords("lng", Number(e.target.value))}
+				value={lng}
+				type="text"
+				name="lng"
+				onChange={handleCoords}
 			/>
 			<Button
-				size="small"
+				size={button.size}
+				disabled={button.disabled}
 				variant="contained"
 				sx={{ flexGrow: "1", boxShadow: 0 }}
-
-				onClick={()=>onCoordsChange(coords)}>
-				Submit
+				onClick={() => onCoordsChange({ lat: Number(lat), lng: Number(lng) })}>
+				{button.text}
 			</Button>
 		</Box>
 	);
 }
+
+Coordinates.defaultProps = {
+	button: { text: "Submit", size: "small", disabled: false },
+};
+
+Coordinates.propTypes = {
+	onCoordsChange: PropTypes.func,
+	button: PropTypes.shape({
+		text: PropTypes.string,
+		size: PropTypes.oneOf(["small", "medium", "large"]),
+		disabled: PropTypes.bool,
+	}),
+};
 
 export default React.memo(Coordinates);

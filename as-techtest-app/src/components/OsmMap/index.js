@@ -4,9 +4,9 @@ import { MapContainer, TileLayer, useMap } from "react-leaflet";
 
 function OsmMap({ lat, lng, onMapCoordsChange }) {
 	return (
-		<MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+		<MapContainer center={[0, 0]} zoom={13} scrollWheelZoom={true}>
 			<TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-			<Marker position={[51.505, -0.09]}>
+			<Marker position={[0, 0]}>
 				<Popup>
 					A pretty CSS3 popup. <br /> Easily customizable.
 				</Popup>

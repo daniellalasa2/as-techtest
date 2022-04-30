@@ -29,11 +29,10 @@ function App() {
 					<OsmMap />
 					<Coordinates
 						onCoordsChange={(coords) => console.log("coordinates: ", coords)}
+            button={{text:"Display On Map"}}
 					/>
 					{/* <Typography variant="body" ></Typography> */}
-					<Geojson
-					
-					/>
+					{/* <Geojson/> */}
 				</Box>
 			</Container>
 		</div>
