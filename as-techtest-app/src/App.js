@@ -4,11 +4,12 @@ import Container from "@mui/material/Container";
 import Coordinates from "./components/Coordinates";
 import Geojson from "./components/Geojson";
 import Box from "@mui/material/Box";
-import OsmMap from "./components/Geojson";
+import OsmMap from "./components/OsmMap";
 import { grey } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
 
 function App() {
+  
 	return (
 		<div className="App">
 			<Container maxWidth="lg">
@@ -16,7 +17,7 @@ function App() {
 					component="div"
 					maxWidth="lg"
 					sx={{
-						"& > :not(style)": { m: 1 },
+						"& > :not(style)": { m: 2 },
 						flexDirection: "row",
 						minHeight: "600px",
 						heigtht: "auto",
@@ -26,13 +27,13 @@ function App() {
 						borderRadius: 3,
 						marginTop: 3,
 					}}>
-					<OsmMap />
+					<OsmMap onMapCoordsChange={(coords)=>console.log(coords)}/>
 					<Coordinates
 						onCoordsChange={(coords) => console.log("coordinates: ", coords)}
             button={{text:"Display On Map"}}
 					/>
 					{/* <Typography variant="body" ></Typography> */}
-					{/* <Geojson/> */}
+					<Geojson position={}/>
 				</Box>
 			</Container>
 		</div>

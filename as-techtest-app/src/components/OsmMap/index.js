@@ -1,23 +1,64 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
-
-function OsmMap({ lat, lng, onMapCoordsChange }) {
+import {
+	MapContainer,
+	TileLayer,
+	Marker,
+	useMap,
+	useMapEvents,
+} from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import "./style.css";
+import markerIconImg from "./marker.png";
+function OsmMap({ position, onMapCoordsChange }) {
+	const [marker, setMarker] = React.useState(position);
+	const markerIcon = new L.icon({
+		iconUrl: markerIconImg,
+		iconSize: [64, 64],
+		iconAnchor: [32, 64],
+	});
+	const MapEventHandler = () => {
+		const map = useMap();
+		useMapEvents({
+			click: (e) => {
+				const { lat, lng } = e.latlng;
+				setMarker({ lat, lng });
+				map.flyTo([lat, lng]);
+			},
+		});
+		return null;
+	};
+	React.useEffect(() => {
+		onMapCoordsChange(marker);
+	}, [marker]);
 	return (
-		<MapContainer center={[0, 0]} zoom={13} scrollWheelZoom={true}>
-			<TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-			<Marker position={[0, 0]}>
-				<Popup>
-					A pretty CSS3 popup. <br /> Easily customizable.
-				</Popup>
-			</Marker>
-		</MapContainer>
+		<div>
+			<MapContainer
+				center={marker}
+				zoom={11}
+				scrollWheelZoom={true}
+				minZoom={3}>
+				<TileLayer
+					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+				/>
+				<MapEventHandler />
+				<Marker icon={markerIcon} position={marker} />
+			</MapContainer>
+		</div>
 	);
 }
 
+OsmMap.defaultProps = {
+	position: { lat: 52.52, lng: 13.4 }, // Berlin
+};
+
 OsmMap.propTypes = {
-	lat: PropTypes.number,
-	lng: PropTypes.number,
+	position: PropTypes.shape({
+		lat: PropTypes.number,
+		lng: PropTypes.number,
+	}),
 	onMapCoordsChange: PropTypes.func,
 };
 
