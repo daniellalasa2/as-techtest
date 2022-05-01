@@ -4,26 +4,27 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
-function Coordinates({ onCoordsChange, button }) {
-	const [lat, setLat] = React.useState("");
-	const [lng, setLng] = React.useState("");
+function Coordinates({ onCoordsChange, button, position }) {
+	const [coords, setCoords] = React.useState(position);
+
+	React.useEffect(()=>{
+		setCoords(position);
+    },[position]);
 
 	const handleCoords = (e) => {
 		const { name, value } = e.target;
 		if (
 			name === "lat" &&
-			value.length <= 11 &&
 			Number(value) <= 90 &&
 			Number(value) >= -90
 		) {
-			setLat(value);
+			setCoords({...coords,lat:value});
 		} else if (
 			name === "lng" &&
-			value.length <= 12 &&
 			Number(value) <= 180 &&
 			Number(value) >= -180
-		) {
-			setLng(value);
+			) {
+			setCoords({...coords,lng:value});
 		}
 	};
 
@@ -42,7 +43,7 @@ function Coordinates({ onCoordsChange, button }) {
 				label="Latitude"
 				variant="outlined"
 				sx={{ flexGrow: "1" }}
-				value={lat}
+				value={coords.lat}
 				type="text"
 				name="lat"
 				onChange={handleCoords}
@@ -53,7 +54,7 @@ function Coordinates({ onCoordsChange, button }) {
 				label="Langitude"
 				variant="outlined"
 				sx={{ flexGrow: "1" }}
-				value={lng}
+				value={coords.lng}
 				type="text"
 				name="lng"
 				onChange={handleCoords}
@@ -63,7 +64,7 @@ function Coordinates({ onCoordsChange, button }) {
 				disabled={button.disabled}
 				variant="contained"
 				sx={{ flexGrow: "1", boxShadow: 0 }}
-				onClick={() => onCoordsChange({ lat: Number(lat), lng: Number(lng) })}>
+				onClick={() => onCoordsChange({ lat: Number(coords.lat), lng: Number(coords.lng) })}>
 				{button.text}
 			</Button>
 		</Box>
@@ -81,6 +82,10 @@ Coordinates.propTypes = {
 		size: PropTypes.oneOf(["small", "medium", "large"]),
 		disabled: PropTypes.bool,
 	}),
+	position:PropTypes.shape({
+		lat:PropTypes.number,
+		lng:PropTypes.number
+	})
 };
 
 export default React.memo(Coordinates);

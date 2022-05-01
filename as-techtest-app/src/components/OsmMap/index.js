@@ -20,25 +20,35 @@ function OsmMap({ position, onMapCoordsChange }) {
 	});
 	const MapEventHandler = () => {
 		const map = useMap();
+        React.useEffect(()=>{
+            map.flyTo(marker);
+        },[marker]);
 		useMapEvents({
-			click: (e) => {
-				const { lat, lng } = e.latlng;
+            click: (e) => {
+                const { lat, lng } = e.latlng;
 				setMarker({ lat, lng });
-				map.flyTo([lat, lng]);
 			},
 		});
 		return null;
 	};
+
 	React.useEffect(() => {
 		onMapCoordsChange(marker);
 	}, [marker]);
+
+    React.useEffect(()=>{
+        setMarker(position);
+    },[position]);
+
 	return (
 		<div>
 			<MapContainer
 				center={marker}
 				zoom={11}
 				scrollWheelZoom={true}
-				minZoom={3}>
+				minZoom={3}
+                maxBounds={[[-90,-180],[90,180]]}
+                >
 				<TileLayer
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

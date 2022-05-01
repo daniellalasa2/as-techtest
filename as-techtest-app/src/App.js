@@ -9,7 +9,10 @@ import { grey } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
 
 function App() {
-  
+  const [coords,setCoords] = React.useState({lat:52.52,lng:13.4});
+  const handleCoordsChange = (data)=>{
+      setCoords(data);
+  }
 	return (
 		<div className="App">
 			<Container maxWidth="lg">
@@ -27,13 +30,14 @@ function App() {
 						borderRadius: 3,
 						marginTop: 3,
 					}}>
-					<OsmMap onMapCoordsChange={(coords)=>console.log(coords)}/>
+					<OsmMap onMapCoordsChange={handleCoordsChange} position={coords}/>
 					<Coordinates
-						onCoordsChange={(coords) => console.log("coordinates: ", coords)}
+						onCoordsChange={handleCoordsChange}
+            position={coords}
             button={{text:"Display On Map"}}
 					/>
 					{/* <Typography variant="body" ></Typography> */}
-					<Geojson position={}/>
+					<Geojson position={coords}/>
 				</Box>
 			</Container>
 		</div>
