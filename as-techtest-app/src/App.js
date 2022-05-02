@@ -37,7 +37,7 @@ function App() {
             button={{text:"Display On Map"}}
 					/>
 					{/* <Typography variant="body" ></Typography> */}
-					<Geojson position={coords}/>
+					<Geojson coordinates={coords} boundsTolerance={0.002}/>
 				</Box>
 			</Container>
 		</div>
