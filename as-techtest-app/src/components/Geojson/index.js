@@ -3,14 +3,25 @@ import osmtogeojson from "osmtogeojson";
 import { getMapBboxGeoJson } from "../../api";
 import PropTypes from "prop-types";
 import { DataGrid } from "@mui/x-data-grid";
-import useApiErrorHandler from "../../hooks/useApiErrorHandler";
+import apiErrorHandler from "../../api/apiErrorHandler";
 import Typography from "@mui/material/Typography";
-
+import Skeleton from "@mui/material/Skeleton";
 
 function Geojson({ coordinates, boundsTolerance }) {
 	const [geoJsonData, setGeoJsonData] = React.useState({});
 	const [tableRows, setTableRows] = React.useState([]);
-
+	const [apiStatus, setApiStatus] = React.useState({
+		hasError: false,
+		loading: false,
+	});
+	const columns = [
+		{ field: "name", headerName: "Name", width: 200 },
+		{
+			field: "value",
+			headerName: "Value",
+			width: 300,
+		},
+	];
 	const bboxCalculator = (_coordinates) => {
 		return {
 			min_lon: _coordinates.lng,
@@ -20,28 +31,23 @@ function Geojson({ coordinates, boundsTolerance }) {
 		};
 	};
 
-	const columns = [
-		{ field: "name", headerName: "Name", width: 200 },
-		{
-			field: "value",
-			headerName: "Value",
-			width: 300,
-		},
-	];
-
 	//Side effects
-
 	React.useEffect(() => {
 		const _bbox = bboxCalculator(coordinates);
+		setApiStatus({hasError:false,loading:true});
 		getMapBboxGeoJson(_bbox)
 			.then((res) => {
 				console.log("OSM: ", osmtogeojson(res));
 				setGeoJsonData(osmtogeojson(res));
+				setApiStatus({hasError:false,loading:false});
 			})
 			.catch((e) => {
-				// const err = useApiErrorHandler(e.response.status);
+				const err = apiErrorHandler(e.response.status);
+				console.error(err);
+				setApiStatus({hasError:true,loading:false});
 			});
 	}, [coordinates]);
+
 
 	React.useEffect(() => {
 		const rows = [];
@@ -66,24 +72,29 @@ function Geojson({ coordinates, boundsTolerance }) {
 				_id++;
 			}
 		}
-
 		setTableRows(rows);
 	}, [geoJsonData]);
 
-	React.useEffect(() => {
-		console.log(tableRows);
-	}, [tableRows]);
-	return (<>
-	<Typography variant="body" style={{ fontWeight: "bold" }}>
-						<br />
-						GeoJson Features Table
-					</Typography>
-					<Typography variant="subtitle2">
-						Hover over table header to see SORT and FILTER features
-					</Typography>
+	return (
+		<>
+			<Typography variant="body" style={{ fontWeight: "bold" }}>
+				<br />
+				GeoJson Features Table
+			</Typography>
+			<Typography variant="subtitle2">
+				Hover over table header to see SORT and FILTER features
+			</Typography>
 			<div style={{ height: "auto", width: "98%" }}>
-				<DataGrid rows={tableRows} columns={columns} density="compact" autoHeight={true} hideFooter={true}/>
-			</div></>
+				<DataGrid
+					rows={tableRows}
+					columns={columns}
+					density="compact"
+					autoHeight={true}
+					hideFooter={true}
+					loading={apiStatus.loading}
+				/>
+			</div>
+		</>
 	);
 }
 

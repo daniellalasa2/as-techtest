@@ -6,7 +6,6 @@ import Geojson from "./components/Geojson";
 import Box from "@mui/material/Box";
 import OsmMap from "./components/OsmMap";
 import { grey } from "@mui/material/colors";
-import Typography from "@mui/material/Typography";
 
 function App() {
 	const [coords, setCoords] = React.useState({ lat: 52.52, lng: 13.4 });
