@@ -3,16 +3,23 @@
 ## Features
 
 1- Pick a location from MapBox by click on location
+
 2- Sync coordinates with picked location from the MapBox
+
 3- Enter any coordinates you want to see a fly to that location on the Map
+
 4- By updating from Map or Coordinates box you will see GeoJson features of that location of available
+
 5- Lat,Lon validation is implemented inside Coordinates components
+
 6- Sort,Filter,Search on the GeoJson data table
 
 ## Notes
 
 1- Redux is needed if the project gets more complex in the future
+
 2- Tests doesn't implemented for the sake of time
+
 3- But the Project is well tested
 
 ## How I thought about the 
