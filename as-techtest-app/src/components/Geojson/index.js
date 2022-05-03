@@ -1,10 +1,11 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import osmtogeojson from "osmtogeojson";
 import { getMapBboxGeoJson } from "../../api";
 import PropTypes from "prop-types";
 import { DataGrid } from "@mui/x-data-grid";
 import useApiErrorHandler from "../../hooks/useApiErrorHandler";
+import Typography from "@mui/material/Typography";
+
 
 function Geojson({ coordinates, boundsTolerance }) {
 	const [geoJsonData, setGeoJsonData] = React.useState({});
@@ -72,22 +73,17 @@ function Geojson({ coordinates, boundsTolerance }) {
 	React.useEffect(() => {
 		console.log(tableRows);
 	}, [tableRows]);
-	return (
-		<Box
-			component="div"
-			sx={{
-				"& > :not(style)": { m: 1 },
-				flexDirection: "row",
-				minHeight: "600px",
-				overflow: "auto",
-				heigtht: "auto",
-				bgcolor: "white",
-				borderRadius: 3,
-			}}>
-			<div style={{ height: 700, width: "98%" }}>
-				<DataGrid rows={tableRows} columns={columns} density="compact" autoHeight={true}/>
-			</div>
-		</Box>
+	return (<>
+	<Typography variant="body" style={{ fontWeight: "bold" }}>
+						<br />
+						GeoJson Features Table
+					</Typography>
+					<Typography variant="subtitle2">
+						Hover over table header to see SORT and FILTER features
+					</Typography>
+			<div style={{ height: "auto", width: "98%" }}>
+				<DataGrid rows={tableRows} columns={columns} density="compact" autoHeight={true} hideFooter={true}/>
+			</div></>
 	);
 }
 

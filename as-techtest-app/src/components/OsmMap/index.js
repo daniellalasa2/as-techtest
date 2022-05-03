@@ -11,6 +11,8 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./style.css";
 import markerIconImg from "./marker.png";
+import Typography from "@mui/material/Typography";
+
 function OsmMap({ position, onMapCoordsChange }) {
 	const [marker, setMarker] = React.useState(position);
 	const markerIcon = new L.icon({
@@ -20,12 +22,12 @@ function OsmMap({ position, onMapCoordsChange }) {
 	});
 	const MapEventHandler = () => {
 		const map = useMap();
-        React.useEffect(()=>{
-            map.flyTo(marker);
-        },[marker]);
+		React.useEffect(() => {
+			map.flyTo(marker);
+		}, [marker]);
 		useMapEvents({
-            click: (e) => {
-                const { lat, lng } = e.latlng;
+			click: (e) => {
+				const { lat, lng } = e.latlng;
 				setMarker({ lat, lng });
 			},
 		});
@@ -36,27 +38,38 @@ function OsmMap({ position, onMapCoordsChange }) {
 		onMapCoordsChange(marker);
 	}, [marker]);
 
-    React.useEffect(()=>{
-        setMarker(position);
-    },[position]);
+	React.useEffect(() => {
+		setMarker(position);
+	}, [position]);
 
 	return (
-		<div>
-			<MapContainer
-				center={marker}
-				zoom={11}
-				scrollWheelZoom={true}
-				minZoom={3}
-                maxBounds={[[-90,-180],[90,180]]}
-                >
-				<TileLayer
-					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-				/>
-				<MapEventHandler />
-				<Marker icon={markerIcon} position={marker} />
-			</MapContainer>
-		</div>
+		<>
+			<Typography variant="body" style={{ fontWeight: "bold", marginTop: 100 }}>
+				Map Box
+			</Typography>
+			<Typography variant="subtitle2">
+				Click on your desired location to display coordinates and GeoJson
+				features if availableMap
+			</Typography>
+			<div>
+				<MapContainer
+					center={marker}
+					zoom={11}
+					scrollWheelZoom={true}
+					minZoom={3}
+					maxBounds={[
+						[-90, -180],
+						[90, 180],
+					]}>
+					<TileLayer
+						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+						url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+					/>
+					<MapEventHandler />
+					<Marker icon={markerIcon} position={marker} />
+				</MapContainer>
+			</div>
+		</>
 	);
 }
 
