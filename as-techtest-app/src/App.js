@@ -30,14 +30,16 @@ function App() {
 						borderRadius: 3,
 						marginTop: 3,
 					}}>
+					<Typography variant="subtitle2" >Click on your desired location to display coordinates and GeoJson features if availableMap</Typography>
 					<OsmMap onMapCoordsChange={handleCoordsChange} position={coords}/>
+					<Typography variant="subtitle2" >Enter desired coordinates to display the GeoJson features of the location, map marker and coordinates are sync with eachother</Typography>
 					<Coordinates
 						onCoordsChange={handleCoordsChange}
             position={coords}
             button={{text:"Display On Map"}}
 					/>
-					{/* <Typography variant="body" ></Typography> */}
-					<Geojson coordinates={coords} boundsTolerance={0.002}/>
+					<Typography variant="body" style={{fontWeight:"bold"}}>GeoJson Features Table</Typography>
+					<Geojson coordinates={coords} boundsTolerance={0.0003}/>
 				</Box>
 			</Container>
 		</div>
