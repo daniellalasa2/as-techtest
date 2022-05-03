@@ -28,6 +28,8 @@ function Coordinates({ onCoordsChange, button, position }) {
 	return (
 		<>
 			<Typography variant="body" style={{ fontWeight: "bold", marginTop: 100 }}>
+			<br />
+			<br />
 				Coordinates
 			</Typography>
 			<Typography variant="subtitle2">
