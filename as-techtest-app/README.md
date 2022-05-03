@@ -1,5 +1,12 @@
 ## AS tech test 
 
+## How I thought about the solution
+
+I've tried to examine provided OpenStreetMap API, at the first glance it seems that there isn't a possibility of gathering data from the API by passing exact coordinates(lat, lng) because the OSM `/map` API just returns OSM data if you pass Bounds to it then I've decided to deep dive into OpenStreetMap API to understand how API is working to have a perfect understanding about the header of problem meanwhile I understood there a chance to get data from the `/map` API if I pass the lat and long coordinates of my desired location as `min_lat` and `min_lng`, in this scenario I can pick the latest child of the array and could ensure that this is the closest area to my desired location, then I displayed it inside GeoJson component.
+
+Another solution that came to mind was a trickier solution, If I iterate through the `geometry` object which is a set of coordinates, and find out which features have the nearest coordinates to my desired location then the parent (or parents, it could be more than one location) could be the answer(s), but I've implemented the first solution :).
+
+
 ## Features
 
 1- Pick a location from MapBox by click on location
@@ -21,12 +28,6 @@
 2- Tests doesn't implemented for the sake of time
 
 3- But the Project is well tested
-
-## How I thought about the solution
-
-I've tried to examine provided OpenStreetMap API, at the first glance it seems that there isn't a possibility of gathering data from the API by passing exact coordinates(lat, lng) because the OSM `/map` API just returns OSM data if you pass Bounds to it then I've decided to deep dive into OpenStreetMap API to understand how API is working to have a perfect understanding about the header of problem meanwhile I understood there a chance to get data from the `/map` API if I pass the lat and long coordinates of my desired location as `min_lat` and `min_lng`, in this scenario I can pick the latest child of the array and could ensure that this is the closest area to my desired location, then I displayed it inside GeoJson component.
-
-Another solution that came to mind was a trickier solution, If I iterate through the `geometry` object which is a set of coordinates, and find out which features have the nearest coordinates to my desired location then the parent (or parents, it could be more than one location) could be the answer(s), but I've implemented the first solution :).
 
 
 ## Available Scripts
